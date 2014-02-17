@@ -1,0 +1,6 @@
+require_relative "repub/binder.rb"
+require_relative "repub/book.rb"
+require_relative "repub/chapterentry.rb"
+require_relative "repub/chapter.rb"
+require_relative "repub/epub.rb"
+require_relative "repub/htmlchapter.rb"
