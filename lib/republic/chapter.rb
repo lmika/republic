@@ -1,4 +1,4 @@
-module Repub
+module Republic
 
 ###
 # Chapter mixin.

@@ -1,4 +1,4 @@
-module Repub
+module Republic
 
 ###
 # Binder mixin.  A binder is responsible for converting a Book into a complete ebook file.

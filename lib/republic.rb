@@ -1,0 +1,6 @@
+require "republic/binder.rb"
+require "republic/book.rb"
+require "republic/chapterentry.rb"
+require "republic/chapter.rb"
+require "republic/epub.rb"
+require "republic/htmlchapter.rb"

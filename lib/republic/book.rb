@@ -1,6 +1,6 @@
 require 'securerandom'
 
-module Repub
+module Republic
 
 ###
 # The description of a book.
@@ -12,12 +12,16 @@ class Book
     attr_accessor :creator
     attr_accessor :chapter_entries
 
-    def initialize()
+    def initialize(&block)
         @id = SecureRandom.uuid
         @title = ""
         @lang = "en"
         @creator = ""
         @chapter_entries = []
+
+        if (block) then
+            yield self
+        end
     end
 
     ###

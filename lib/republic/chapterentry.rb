@@ -1,4 +1,4 @@
-module Repub
+module Republic
 
 ###
 # An instance of a chapter in a book.  This contains information for the book binding.
