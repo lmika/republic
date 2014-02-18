@@ -34,8 +34,10 @@ class Epub
                         x.item("id" => "toc", "href" => "toc.ncx", "media-type" => "application/x-dtbncx+xml")
                         book.chapter_entries.each do |entry|
                             x.item("id" => entry.id, "href" => entry.filename, "media-type" => entry.media_type)
-
-                            # TODO: Resources
+                        end
+                        book.resources.each_index do |resource_index|
+                            resource = book.resources[resource_index]
+                            x.item("id" => "r#{resource_index}", "href" => resource.name, "media-type" => resource.mime_type)
                         end
                     }
                     x.spine("toc" => "toc") {
@@ -114,8 +116,10 @@ class Epub
                 book.chapter_entries.each do |entry|
                     zip.put_next_entry("OPS/" + entry.filename)
                     zip.write(entry.chapter.to_xhtml)
-
-                    # TODO: Resources
+                end
+                book.resources.each do |resource|
+                    zip.put_next_entry("OPS/" + resource.name)
+                    zip.write(resource.content)
                 end
             end
         end

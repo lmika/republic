@@ -9,15 +9,19 @@ Gem::Specification.new do |s|
     s.license       = 'MIT'
 
     s.files         = [
-        'lib/republic.rb',
-        'lib/republic/binder.rb',
-        'lib/republic/book.rb',
-        'lib/republic/chapterentry.rb',
-        'lib/republic/chapter.rb',
-        'lib/republic/epub.rb',
-        'lib/republic/htmlchapter.rb'
+        "lib/republic.rb",
+        "lib/republic/binder.rb",
+        "lib/republic/book.rb",
+        "lib/republic/chapterentry.rb",
+        "lib/republic/chapter.rb",
+        "lib/republic/resource.rb",
+        "lib/republic/localresource.rb",
+        "lib/republic/epub.rb",
+        "lib/republic/dirbinder.rb",
+        "lib/republic/htmlchapter.rb"
     ]
 
     s.add_runtime_dependency 'rubyzip', '~> 1.1'
     s.add_runtime_dependency 'nokogiri', '~> 1.5'
+    s.add_runtime_dependency 'ruby-filemagic', '~> 0.5'
 end
