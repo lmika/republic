@@ -14,7 +14,7 @@ class ChapterEntry
         @chapter = chapter
 
         @id = "c#{index}"
-        @filename = "c#{index}.xhtml"
+        @filename = "chap%04d.xhtml" % index
         @media_type = "application/xhtml+xml"
         @toc_entry = chapter.name
     end
