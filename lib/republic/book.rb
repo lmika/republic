@@ -20,6 +20,7 @@ class Book
         @creator = ""
         @chapter_entries = []
         @resources = []
+        @prepared = false
 
         if (block) then
             yield self
@@ -36,6 +37,20 @@ class Book
                 @resources << item
             else
                 throw Exception.new("Expected either a Chapter or a Resource")
+        end
+    end
+
+    ###
+    # Prepares the book.
+    def prepare()
+        if (! @prepared) then
+            # Prepare each of the chapters
+            @chapter_entries.each do |c|
+                c.chapter.prepare
+                resources = c.chapter.resources
+                resources.each { |r| self << r }
+            end
+            @prepared = true
         end
     end
 end

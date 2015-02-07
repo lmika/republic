@@ -13,6 +13,7 @@ class Epub
         end
 
         def write(book, outfile)
+            book.prepare
             build_epub(book, outfile)
         end
 

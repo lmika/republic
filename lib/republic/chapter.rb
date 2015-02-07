@@ -16,7 +16,15 @@ module Chapter
         nil
     end
 
-    # TODO: Resources (like images, etc)
+    ###
+    # Called before the chapter is written by the binder
+    def prepare()
+    end
+
+    ###
+    # Returns a list of resources that this chapter contains.
+    def resources()
+    end
 end
 
 end
