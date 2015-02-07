@@ -43,9 +43,7 @@ class Epub
                     }
                     x.spine("toc" => "toc") {
                         book.chapter_entries.each do |entry|
-                            if (entry.toc_entry) then
-                                x.itemref("idref" => entry.id)
-                            end
+                            x.itemref("idref" => entry.id)
                         end
                     }
                 }
