@@ -66,13 +66,13 @@ class Epub
                     x.navMap {
                         order = 1
                         book.chapter_entries.each do |entry|
-                            if (entry.toc_entry) then
-                                x.navPoint("class" => "chapter", "id" => "navPoint-#{order.to_s}", "playOrder" => order.to_s) {
+                            x.navPoint("class" => "chapter", "id" => "navPoint-#{order.to_s}", "playOrder" => order.to_s) {
+                                if (entry.toc_entry) then
                                     x.navLabel { x.text_ { x.text entry.toc_entry } }
-                                    x.content("src" => entry.filename)
-                                }
-                                order = order + 1
-                            end
+                                end
+                                x.content("src" => entry.filename)
+                            }
+                            order = order + 1
                         end
                     }
                 }
