@@ -53,6 +53,7 @@ class Epub
         ###
         # Generates the NCX file
         def gen_ncx(book)
+            chapterAndEntries = line_up_entries_behind_chapters(book.chapter_entries)
             Nokogiri::XML::Builder.new do |x|
                 x.ncx("version" => "2005-1", "xml:lang" => book.lang, "xmlns" => "http://www.daisy.org/z3986/2005/ncx/") {
                     x.head {
@@ -65,18 +66,46 @@ class Epub
                     x.docAuthor { x.text_ { x.text book.creator } }
                     x.navMap {
                         order = 1
-                        book.chapter_entries.each do |entry|
+
+                        # There must be one navPoint per entry in the ToC.  It will appear even
+                        # when no navLabel is set.
+                        # Chapters with a false toc_entry should be added to the last navPoint for an entry
+                        # with a true toc_entry
+                        #
+                        chapterAndEntries.each do |chapter|
                             x.navPoint("class" => "chapter", "id" => "navPoint-#{order.to_s}", "playOrder" => order.to_s) {
-                                if (entry.toc_entry) then
-                                    x.navLabel { x.text_ { x.text entry.toc_entry } }
+                                firstEntry = chapter.first
+                                x.navLabel { x.text_ { x.text firstEntry.toc_entry } }
+
+                                chapter.each do |entry|
+                                    x.content("src" => entry.filename)
                                 end
-                                x.content("src" => entry.filename)
                             }
                             order = order + 1
                         end
                     }
                 }
             end.to_xml
+        end
+
+        ###
+        # Line up all entries with a false toc_entry "behind" (i.e. after) entries
+        # with a true toc_entry.  Returns an array of arrays with the first array
+        # either being the first entry or an entry with a toc
+        def line_up_entries_behind_chapters(entries)
+            arrays = []
+            lastArray = nil
+
+            entries.each do |entry|
+                if (lastArray == nil) or (entry.toc_entry) then
+                    lastArray = [entry]
+                    arrays << lastArray
+                else
+                    lastArray << entry
+                end
+            end
+
+            arrays
         end
 
         ###
