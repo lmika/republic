@@ -1,4 +1,4 @@
-require 'filemagic'
+require 'mime/types'
 
 require_relative 'resource'
 
@@ -15,11 +15,18 @@ class LocalResource
         @filename = filename
         @archiveName = ((archiveName.nil?) ? File.basename(filename) : archiveName)
 
+        mimeType = MIME::Types.of(@filename).first
+        if (mimeType) then
+            @mimeType = mimeType.to_s
+        else
+            @mimeType = "application/octet-stream"
+        end
+
         # TODO: Having no encoding is arguably not a good idea.  See what support for encodings
         # are present in ePub
-        fileMagic = FileMagic.new(FileMagic::MAGIC_MIME_TYPE)
-        @mimeType = fileMagic.file(filename)
-        fileMagic.close
+        #fileMagic = FileMagic.new(FileMagic::MAGIC_MIME_TYPE)
+        #@mimeType = fileMagic.file(filename)
+        #fileMagic.close
     end
 
     def name
