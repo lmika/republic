@@ -16,6 +16,7 @@ Gem::Specification.new do |s|
         "lib/republic/chapter.rb",
         "lib/republic/resource.rb",
         "lib/republic/localresource.rb",
+        "lib/republic/dynamicresource.rb",
         "lib/republic/epub.rb",
         "lib/republic/dirbinder.rb",
         "lib/republic/htmlchapter.rb"

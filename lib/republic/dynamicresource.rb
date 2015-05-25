@@ -5,15 +5,15 @@ require_relative 'resource'
 module Republic
 
 ###
-# A resource located on the local file system.
-class LocalResource
+# A resource which will be read from a closure.  The resource still needs a filename
+class DynamicResource
     include Resource
 
     ###
     # New resource.
-    def initialize(filename, archiveName = nil)
-        @filename = filename
-        @archiveName = ((archiveName.nil?) ? File.basename(filename) : archiveName)
+    def initialize(filename, closure)
+        @filename = File.basename(filename)
+        @closure = closure
 
         mimeType = MIME::Types.of(@filename).first
         if (mimeType) then
@@ -24,7 +24,7 @@ class LocalResource
     end
 
     def name
-        @archiveName
+        @filename
     end
 
     def mime_type
@@ -32,7 +32,7 @@ class LocalResource
     end
 
     def content
-        File.read(@filename)
+        @closure.call()
     end
 end
 
