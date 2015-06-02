@@ -123,33 +123,43 @@ class Epub
         ###
         # Creates the .epub file for a particular book.
         def build_epub(book, outfile)
-            Zip::OutputStream::open(outfile) do |zip|
-                # MimeType
-                zip.put_next_entry("mimetype", nil, nil, Zip::Entry::STORED, Zlib::NO_COMPRESSION)
-                zip.write "application/epub+zip"
-
-                # Container
-                zip.put_next_entry("META-INF/container.xml")
-                zip.write(gen_ocf(book))
-
-                # Book OPF file
-                zip.put_next_entry("OPS/book.opf")
-                zip.write(gen_opf(book))
-
-                # TOC Ncx File
-                zip.put_next_entry("OPS/toc.ncx")
-                zip.write(gen_ncx(book))
-
-                # The contents
-                book.chapter_entries.each do |entry|
-                    zip.put_next_entry("OPS/" + entry.filename)
-                    zip.write(entry.chapter.to_xhtml)
-                end
-                book.resources.each do |resource|
-                    zip.put_next_entry("OPS/" + resource.name)
-                    zip.write(resource.content)
-                end
+            if (outfile.is_a?(String)) then
+                Zip::OutputStream::open(outfile) { |zip| build_zip_content(book, zip) }
+            else
+                Zip::OutputStream::write_buffer(outfile) { |zip| build_zip_content(book, zip) }
             end
+        end
+
+        private
+
+        ###
+        # Add the contents of the book to the zip
+        def build_zip_content(book, zip)
+            # MimeType
+            zip.put_next_entry("mimetype", nil, nil, Zip::Entry::STORED, Zlib::NO_COMPRESSION)
+            zip.write "application/epub+zip"
+
+            # Container
+            zip.put_next_entry("META-INF/container.xml")
+            zip.write(gen_ocf(book))
+
+            # Book OPF file
+            zip.put_next_entry("OPS/book.opf")
+            zip.write(gen_opf(book))
+
+            # TOC Ncx File
+            zip.put_next_entry("OPS/toc.ncx")
+            zip.write(gen_ncx(book))
+
+            # The contents
+            book.chapter_entries.each do |entry|
+                zip.put_next_entry("OPS/" + entry.filename)
+                zip.write(entry.chapter.to_xhtml)
+            end
+            book.resources.each do |resource|
+                zip.put_next_entry("OPS/" + resource.name)
+                zip.write(resource.content)
+            end            
         end
     end
 end
